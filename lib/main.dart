@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
 
     return new MaterialApp(
       title: 'Starup up Namer',
+      theme: new ThemeData(
+        primaryColor: Colors.white
+      ),
       home: new RandomWords(),
     );
   }
