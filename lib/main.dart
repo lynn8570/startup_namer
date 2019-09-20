@@ -24,9 +24,7 @@ class MyApp extends StatelessWidget {
 
     return new MaterialApp(
       title: 'Starup up Namer',
-      theme: new ThemeData(
-        primaryColor: Colors.white
-      ),
+      theme: new ThemeData(primaryColor: Colors.white),
       home: new RandomWords(),
     );
   }
@@ -35,6 +33,35 @@ class MyApp extends StatelessWidget {
 class RandomWords extends StatefulWidget {
   @override
   createState() => new RandomWordsState();
+}
+
+class TipRoute extends StatelessWidget {
+  final String text;
+
+  TipRoute({Key key, @required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("提示"),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(18),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(text),
+              RaisedButton(
+                onPressed: () => Navigator.pop(context, "我是返回值AAAAA"),
+                child: Text("返回"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class RandomWordsState extends State<RandomWords> {
@@ -52,10 +79,23 @@ class RandomWordsState extends State<RandomWords> {
         title: new Text("Startup Name Generator"),
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
+          new IconButton(icon: new Icon(Icons.add), onPressed: _pushAdd),
         ],
       ),
       body: _buildSuggestions(),
     );
+  }
+
+  // 异步的方法，等待路由关闭后的返回值
+  void _pushAdd() async {
+    var result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return TipRoute(
+        text: "我是提示XXXX",
+      );
+    }));
+
+    print(result); //打印返回值
   }
 
   void _pushSaved() {
@@ -75,7 +115,6 @@ class RandomWordsState extends State<RandomWords> {
         context: context,
         tiles: tiles,
       ).toList();
-
 
       return new Scaffold(
         appBar: new AppBar(
