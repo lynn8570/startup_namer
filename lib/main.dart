@@ -25,7 +25,11 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Starup up Namer',
       theme: new ThemeData(primaryColor: Colors.white),
-      home: new RandomWords(),
+      routes: {
+        "new_page": (context) => TipRoute(text: "我是路由表",),
+        "/": (context) => RandomWords()
+      },
+//      home: new RandomWords(), //有"/" 就不要home属性了
     );
   }
 }
@@ -53,7 +57,7 @@ class TipRoute extends StatelessWidget {
             children: <Widget>[
               Text(text),
               RaisedButton(
-                onPressed: () => Navigator.pop(context, "我是返回值AAAAA"),
+                onPressed: () => Navigator.pop(context, "我是返回值BBBB"),
                 child: Text("返回"),
               )
             ],
@@ -89,11 +93,14 @@ class RandomWordsState extends State<RandomWords> {
   // 异步的方法，等待路由关闭后的返回值
   void _pushAdd() async {
     var result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return TipRoute(
-        text: "我是提示XXXX",
-      );
-    }));
+//    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+//      return TipRoute(
+//        text: "我是提示XXXX",
+//      );
+//    }));
+
+    //
+    await Navigator.pushNamed(context, "new_page");
 
     print(result); //打印返回值
   }
@@ -101,7 +108,7 @@ class RandomWordsState extends State<RandomWords> {
   void _pushSaved() {
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       final tiles = _saved.map(
-        (pair) {
+            (pair) {
           return new ListTile(
             title: new Text(
               pair.asPascalCase,
