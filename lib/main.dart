@@ -26,10 +26,21 @@ class MyApp extends StatelessWidget {
       title: 'Starup up Namer',
       theme: new ThemeData(primaryColor: Colors.white),
       routes: {
-        "new_page": (context) => TipRoute(text: "我是路由表",),
+//        "new_page": (context) => TipRoute(text: "我是路由表",),
+        "new_page": (context) => TipRoute(
+            text: ModalRoute.of(context).settings.arguments), //参数直接传入到变量
         "/": (context) => RandomWords()
       },
 //      home: new RandomWords(), //有"/" 就不要home属性了
+      onGenerateRoute: (RouteSettings settings) {
+        //如果路由表中没有注册的话，才会调用 onGenerateRoute
+        return MaterialPageRoute(builder: (context) {
+          String routeName = settings.name;
+
+          //添加所有页面的基础逻辑：有登录了进入购物车等页面，否则 返回登录页面
+
+        });
+      },
     );
   }
 }
@@ -46,12 +57,11 @@ class TipRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     //如果有参数
     var args = ModalRoute.of(context).settings.arguments;
-    
+
     print(args);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text("提示"),
@@ -105,8 +115,9 @@ class RandomWordsState extends State<RandomWords> {
 //      );
 //    }));
 
-    //
-    await Navigator.pushNamed(context, "new_page",arguments: "hi args"); //添加参数
+        //
+        await Navigator.pushNamed(context, "new_page",
+            arguments: "hi args"); //添加参数
 
     print(result); //打印返回值
   }
@@ -114,7 +125,7 @@ class RandomWordsState extends State<RandomWords> {
   void _pushSaved() {
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       final tiles = _saved.map(
-            (pair) {
+        (pair) {
           return new ListTile(
             title: new Text(
               pair.asPascalCase,
