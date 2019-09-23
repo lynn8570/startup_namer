@@ -46,6 +46,12 @@ class TipRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    //如果有参数
+    var args = ModalRoute.of(context).settings.arguments;
+    
+    print(args);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("提示"),
@@ -100,7 +106,7 @@ class RandomWordsState extends State<RandomWords> {
 //    }));
 
     //
-    await Navigator.pushNamed(context, "new_page");
+    await Navigator.pushNamed(context, "new_page",arguments: "hi args"); //添加参数
 
     print(result); //打印返回值
   }
